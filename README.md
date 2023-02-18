@@ -2,6 +2,10 @@
 
 Makes it easy to intergrate payment gatway to your php project.
 
+install using composer
+
+> composer require denniskemboi/payment-gateway
+
 # M-Pesa intergration
 
 ## configuring the app
