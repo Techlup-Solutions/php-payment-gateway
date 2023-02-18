@@ -77,4 +77,31 @@ class StkPush extends App{
         return json_decode($curl_response);
     }
 
+    // get api callback data
+    public static function getCallbackData(){
+        header("Content-type: application/json; charset=utf-8");
+        date_default_timezone_set('Africa/Nairobi');
+        $json = file_get_contents('php://input');
+        
+        $data = json_decode($json)->Body->stkCallback;
+        
+        $response = new stdClass();
+        $response->status = $data->ResultCode;
+        $response->MerchantRequestID = $data->MerchantRequestID;
+        $response->CheckoutRequestID = $data->CheckoutRequestID;
+        $response->ResultDesc = $data->ResultDesc;
+
+        if(property_exists($data, "CallbackMetadata")){
+            $metadata = $data->CallbackMetadata->Item;
+            foreach ($metadata as $val) {
+                foreach ($val as $v){
+                    $name=$val->Name;
+                    $response->$name = $v;
+                }
+            }
+        }
+
+        return $response;
+    }
+
 }
