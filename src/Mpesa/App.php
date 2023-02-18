@@ -44,12 +44,12 @@ class App{
         }
     }
 
-    public function getPassword(){
+    public function getPassword($timestamp){
         date_default_timezone_set('Africa/Nairobi');
         return base64_encode(
             $_ENV['MPESA_SHOT_CODE'].
             $_ENV['MPESA_PASS_KEY'].
-            date('YmdHis')
+            $timestamp
         );
     }
 }
