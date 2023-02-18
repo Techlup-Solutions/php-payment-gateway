@@ -3,7 +3,9 @@
     "description": "intergrate all payment gateways to your project",
     "type": "library",
     "require": {
-        "php": ">7.0"
+        "php": ">7.0",
+        "vlucas/phpdotenv": "^5.5",
+        "ext-curl": "*"
     },
     "autoload": {
         "psr-4": {
