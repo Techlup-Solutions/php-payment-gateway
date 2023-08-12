@@ -19,6 +19,11 @@ MPESA_PASS_KEY=""
 MPESA_SHOT_CODE=""
 ```
 
+To switch from sandbox and live you can add the following to your env file
+
+```env
+MPESA_SANDBOX=true
+```
 ## make an stk push for buy goods
 
 ### initiating the request
@@ -31,7 +36,14 @@ first import the dependency to your php class, create an instance of stkpush, th
 // import the dependency
 use Denniskemboi\PaymentGateway\Mpesa\StkPush;
 
-$data = new StkPush();
+// you can use the code below to format user phone number
+preg_replace('/^(?:\+?254|0)?/', '254', $request->input("phone"));
+
+// when initializing stkpush, you will have to give the root folder
+// this will help the class to find your env file
+// laravel users use base_path() function
+
+$data = new StkPush(base_path());
 $data->setCallbackUrl("{YOUR_API_CALLBACK}") // required
     ->setAmount("{AMOUNT}") // required
     ->setPhone("{PHONE_NUMBER}") // required 254*********
@@ -41,11 +53,12 @@ $data->setCallbackUrl("{YOUR_API_CALLBACK}") // required
 $response = $data->tillRequestPush();
 
 ```
+
 after the request is submmited, the following response will be ruturned from mpesa.
 
 <b>Keep in mind that $response is an object of std class</b>. bellow is an example on how you can access response properties.
 
-to access MerchantRequestID for example `` $response->MerchantRequestID ``.
+to access MerchantRequestID for example `$response->MerchantRequestID`.
 
 ```json
 {
@@ -68,8 +81,9 @@ I have made it easy for you to access the callback data.
 use Denniskemboi\PaymentGateway\Mpesa\StkPush;
 
 // get the callback data
-$data = StkPush::getCallbackData(); 
+$data = StkPush::getCallbackData();
 ```
+
 below is the format of data returned, <b>dont forget that it is Std Class, don't confuse with array.</b>
 
 ```json

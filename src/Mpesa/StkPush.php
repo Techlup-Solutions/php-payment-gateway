@@ -1,6 +1,6 @@
 <?php
 
-namespace Denniskemboi\PaymentGateway\Mpesa;
+namespace Techlup\PaymentGateway\Mpesa;
 
 use Dotenv\Dotenv;
 use Exception;
@@ -14,12 +14,13 @@ class StkPush extends App
     protected $reference = "";
     protected $description = "goods/servises payment";
     protected $transaction_type = "CustomerPayBillOnline";
-    protected $initiate_url = "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+    protected $initiate_url = '';
     public function __construct($root = __DIR__ . '/../..')
     {
         parent::__construct($root);
         // initialize dot env
         Dotenv::createImmutable($this->app_root)->load();
+        $this->initiate_url='https://'.$this->isSandbox()?'sandbox':'api'.'.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
     }
 
     public function setCallbackUrl($url)
