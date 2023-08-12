@@ -1,6 +1,6 @@
 <?php
 
-namespace Denniskemboi\PaymentGateway\Mpesa;
+namespace Techlup\PaymentGateway\Mpesa;
 
 use Dotenv\Dotenv;
 use Exception;
