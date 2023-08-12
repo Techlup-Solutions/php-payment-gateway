@@ -1,6 +1,6 @@
 {
-    "name": "denniskemboi/payment-gateway",
-    "description": "intergrate all payment gateways to your project",
+    "name": "techlup/payment-gateway",
+    "description": "integrate all payment gateways to your project",
     "type": "library",
     "require": {
         "php": ">7.0",
@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Denniskemboi\\PaymentGateway\\": "src/"
+            "Techlup\\PaymentGateway\\": "src/"
         }
     },
     "authors": [

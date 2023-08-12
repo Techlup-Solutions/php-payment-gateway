@@ -4,7 +4,7 @@ Makes it easy to intergrate payment gatway to your php project.
 
 install using composer
 
-> composer require denniskemboi/payment-gateway
+> composer require techlup/payment-gateway
 
 # M-Pesa intergration
 
@@ -34,7 +34,7 @@ first import the dependency to your php class, create an instance of stkpush, th
 
 
 // import the dependency
-use Denniskemboi\PaymentGateway\Mpesa\StkPush;
+use Techlup\PaymentGateway\Mpesa\StkPush;
 
 // you can use the code below to format user phone number
 preg_replace('/^(?:\+?254|0)?/', '254', $request->input("phone"));
@@ -78,7 +78,7 @@ I have made it easy for you to access the callback data.
 
 ```php
 // first import the dependencies
-use Denniskemboi\PaymentGateway\Mpesa\StkPush;
+use Techlup\PaymentGateway\Mpesa\StkPush;
 
 // get the callback data
 $data = StkPush::getCallbackData();
