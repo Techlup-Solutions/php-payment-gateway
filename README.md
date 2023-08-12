@@ -19,6 +19,11 @@ MPESA_PASS_KEY=""
 MPESA_SHOT_CODE=""
 ```
 
+To switch from sandbox and live you can add the following to your env file
+
+```env
+MPESA_SANDBOX=true
+```
 ## make an stk push for buy goods
 
 ### initiating the request
