@@ -16,11 +16,19 @@ class App
         Dotenv::createImmutable($this->app_root)->load();
     }
 
+    /**
+     * @return bool returns false if MPESA_SANDBOX is set to false in .env
+     */
+    public function isSandbox(): bool{
+        if(isset($_ENV['MPESA_SANDBOX'])) return boolval($_ENV['MPESA_SANDBOX']);
+        return false;
+    }
+
     // get live access token
     public function getLiveToken()
     {
         $headers = ['Content-Type:application/json; charset=utf8'];
-        $access_token_url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $access_token_url = 'https://'.$this->isSandbox()?'sandbox':'api'.'.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
         $curl = curl_init($access_token_url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
