@@ -20,7 +20,9 @@ class App
      * @return bool returns false if MPESA_SANDBOX is set to false in .env
      */
     public function isSandbox(): bool{
-        if(isset($_ENV['MPESA_SANDBOX'])) return boolval($_ENV['MPESA_SANDBOX']);
+        if(isset($_ENV['MPESA_SANDBOX'])){
+            if(trim($_ENV['MPESA_SANDBOX'])=='true') return true;
+        }
         return false;
     }
 
@@ -28,7 +30,7 @@ class App
     public function getLiveToken()
     {
         $headers = ['Content-Type:application/json; charset=utf8'];
-        $access_token_url = 'https://'.$this->isSandbox()?'sandbox':'api'.'.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $access_token_url = 'https://'.($this->isSandbox()?'sandbox':'api').'.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
         $curl = curl_init($access_token_url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
