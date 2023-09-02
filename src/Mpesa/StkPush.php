@@ -20,7 +20,7 @@ class StkPush extends App
         parent::__construct($root);
         // initialize dot env
         Dotenv::createImmutable($this->app_root)->load();
-        $this->initiate_url='https://'.$this->isSandbox()?'sandbox':'api'.'.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $this->initiate_url='https://'.($this->isSandbox()?'sandbox':'api').'.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
     }
 
     public function setCallbackUrl($url)
