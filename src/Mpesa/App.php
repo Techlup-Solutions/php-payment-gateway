@@ -17,11 +17,11 @@ class App
     }
 
     /**
-     * @return bool returns false if MPESA_SANDBOX is set to false in .env
+     * @return bool returns false if TECHLUP_PAYMENT_SANDBOX is set to false in .env
      */
     public function isSandbox(): bool{
-        if(isset($_ENV['MPESA_SANDBOX'])){
-            if(trim($_ENV['MPESA_SANDBOX'])=='true') return true;
+        if(isset($_ENV['TECHLUP_PAYMENT_SANDBOX'])){
+            if(trim($_ENV['TECHLUP_PAYMENT_SANDBOX'])=='true') return true;
         }
         return false;
     }
