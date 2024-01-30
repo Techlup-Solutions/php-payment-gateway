@@ -1,6 +1,6 @@
 <?php
 
-namespace Techlup\PaymentGateway\Mpesa;
+namespace Techlup\PaymentGateway\Paypal;
 
 use Dotenv\Dotenv;
 use Exception;
@@ -29,14 +29,15 @@ class App
     // get live access token
     public function getLiveToken()
     {
-        $headers = ['Content-Type:application/json; charset=utf8'];
-        $access_token_url = 'https://'.($this->isSandbox()?'sandbox':'api').'.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $headers = ['Accept: application/json; Content-Type:application/json; charset=utf8; Accept-Language: en_US'];
+        $access_token_url = 'https://'.($this->isSandbox()?'api.sandbox':'api').'.paypal.com/v1/oauth2/token?grant_type=client_credentials';
 
         $curl = curl_init($access_token_url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_HEADER, FALSE);
-        curl_setopt($curl, CURLOPT_USERPWD, $_ENV['MPESA_CONSUMER_KEY'] . ':' . $_ENV['MPESA_CONSUMER_SECRET']);
+        curl_setopt($curl, CURLOPT_USERPWD, $_ENV['PAYPAL_CLIENT_ID'] . ':' . $_ENV['PAYPAL_SECRET']);
         curl_close($curl);
         try {
 
@@ -54,15 +55,5 @@ class App
             $data->error = $e->getMessage();
             return $data;
         }
-    }
-
-    public function getPassword($timestamp)
-    {
-        date_default_timezone_set('Africa/Nairobi');
-        return base64_encode(
-            $_ENV['MPESA_SHOT_CODE'] .
-                $_ENV['MPESA_PASS_KEY'] .
-                $timestamp
-        );
     }
 }
