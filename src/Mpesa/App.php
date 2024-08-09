@@ -8,20 +8,24 @@ use stdClass;
 
 class App
 {
-    protected $app_root = __DIR__ . '/../..';
-    public function __construct($root = __DIR__ . '/../..')
+    protected $config = [
+        'CONSUMER_KEY' => '',
+        'CONSUMER_SECRET' => '',
+        'SHORT_CODE' => '',
+        'PASS_KEY' => '',
+    ];
+
+    public function __construct($config)
     {
-        $this->app_root = $root;
-        // initialize dot env
-        Dotenv::createImmutable($this->app_root)->load();
+        $this->config = $config;
     }
 
     /**
      * @return bool returns false if TECHLUP_PAYMENT_SANDBOX is set to false in .env
      */
     public function isSandbox(): bool{
-        if(isset($_ENV['TECHLUP_PAYMENT_SANDBOX'])){
-            if(trim($_ENV['TECHLUP_PAYMENT_SANDBOX'])=='true') return true;
+        if(isset($this->config['SANDBOX'])){
+            if($this->config['SANDBOX']) return true;
         }
         return false;
     }
@@ -36,7 +40,7 @@ class App
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_HEADER, FALSE);
-        curl_setopt($curl, CURLOPT_USERPWD, $_ENV['MPESA_CONSUMER_KEY'] . ':' . $_ENV['MPESA_CONSUMER_SECRET']);
+        curl_setopt($curl, CURLOPT_USERPWD, $this->config['CONSUMER_KEY'] . ':' . $this->config['CONSUMER_SECRET']);
         curl_close($curl);
         try {
 
@@ -54,16 +58,6 @@ class App
             $data->error = $e->getMessage();
             return $data;
         }
-    }
-
-    public function getPassword($timestamp)
-    {
-        date_default_timezone_set('Africa/Nairobi');
-        return base64_encode(
-            $_ENV['MPESA_SHOT_CODE'] .
-                $_ENV['MPESA_PASS_KEY'] .
-                $timestamp
-        );
     }
 
     public function encriptPassword($pass){

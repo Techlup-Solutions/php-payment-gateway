@@ -11,16 +11,28 @@ class StkPush extends App
     protected $callback_url = "";
     protected $amount = 0.00;
     protected $phone = "";
+    protected $short_code = "";
+    protected $party_b = "";
     protected $reference = "";
     protected $description = "goods/servises payment";
     protected $transaction_type = "CustomerPayBillOnline";
     protected $initiate_url = '';
-    public function __construct($root = __DIR__ . '/../..')
+    public function __construct($config)
     {
-        parent::__construct($root);
-        // initialize dot env
-        Dotenv::createImmutable($this->app_root)->load();
+        parent::__construct($config);
         $this->initiate_url='https://'.($this->isSandbox()?'sandbox':'api').'.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+    }
+
+
+
+    public function getPassword($timestamp)
+    {
+        date_default_timezone_set('Africa/Nairobi');
+        return base64_encode(
+            $this->short_code .
+            $this->config['PASS_KEY'] .
+            $timestamp
+        );
     }
 
     public function setCallbackUrl($url)
@@ -36,6 +48,16 @@ class StkPush extends App
     public function setPhone($phone)
     {
         $this->phone = $phone;
+        return $this;
+    }
+    public function setShortCode($short_code)
+    {
+        $this->short_code = $short_code;
+        return $this;
+    }
+    public function setPartyB($part_b)
+    {
+        $this->party_b = $part_b;
         return $this;
     }
     public function setReference($ref)
@@ -65,13 +87,13 @@ class StkPush extends App
         $timestamp = date('YmdHis');
 
         $curl_post_data = array(
-            'BusinessShortCode' => $_ENV['MPESA_SHOT_CODE'],
+            'BusinessShortCode' => $this->short_code,
             'Password' => $this->getPassword($timestamp),
             'Timestamp' => $timestamp,
             'TransactionType' => $this->transaction_type,
             'Amount' => $this->amount,
             'PartyA' => $this->phone,
-            'PartyB' => $_ENV['MPESA_SHOT_CODE'],
+            'PartyB' => $this->party_b,
             'PhoneNumber' => $this->phone,
             'CallBackURL' => $this->callback_url,
             'AccountReference' => $this->reference,

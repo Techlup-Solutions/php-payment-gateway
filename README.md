@@ -10,21 +10,18 @@ install using composer
 # M-Pesa intergration
 
 ## configuring the app
-
-Add the following to the env, ass per your project, shotcode is the till number for the buy goods. Ensure your app is live on developer portal
-
-```env
-MPESA_CONSUMER_KEY=""
-MPESA_CONSUMER_SECRET=""
-MPESA_PASS_KEY=""
-MPESA_SHOT_CODE=""
+The following shows the configurations required depending on the API you want to use
+```php
+$config = [
+        'CONSUMER_KEY' => '',
+        'CONSUMER_SECRET' => '',
+        'PASS_KEY' => '', // required for STK push
+        'SANDBOX' => true,
+    ];
 ```
 
 To switch from sandbox and live you can add the following to your env file
 
-```env
-TECHLUP_PAYMENT_SANDBOX=true
-```
 ## make an stk push for buy goods
 
 ### initiating the request
@@ -40,14 +37,12 @@ use Techlup\PaymentGateway\Mpesa\StkPush;
 // you can use the code below to format user phone number
 preg_replace('/^(?:\+?254|0)?/', '254', $request->input("phone"));
 
-// when initializing stkpush, you will have to give the root folder
-// this will help the class to find your env file
-// laravel users use base_path() function
-
-$data = new StkPush(base_path());
+$data = new StkPush($config);
 $data->setCallbackUrl("{YOUR_API_CALLBACK}") // required
     ->setAmount("{AMOUNT}") // required
     ->setPhone("{PHONE_NUMBER}") // required 254*********
+    ->setPartyB('123456')
+    ->setShortCode('123456')
     ->setReference("{REF}") //reuired * e.g account number, room number, etc
     ->setRemarks("your remarks"); // optional
 
@@ -108,7 +103,7 @@ https://developer.safaricom.co.ke/APIs/BusinessToCustomer
 ```php
 use Techlup\PaymentGateway\Mpesa\B2C;
 
-$data = new B2C();
+$data = new B2C($config);
 $data->setCallbackUrl("https://enm9smnsyaaq8.x.pipedream.net/")
     ->setAmount(1000)
     ->setOriginatorConversationId($uniqueId = uniqid('', true))
@@ -120,7 +115,7 @@ $data->setCallbackUrl("https://enm9smnsyaaq8.x.pipedream.net/")
     ->setRemarks("here are my remarks")
     ->setOccasion("Testing");
 
-$response = $data->getCallbackData();
+$response = $data->pay();
 echo json_encode($response);
 
 ```
