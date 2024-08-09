@@ -2,39 +2,15 @@
 
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 
-$paypal_subscription = new Techlup\PaymentGateway\Paypal\Subscription();
+use Techlup\PaymentGateway\Mpesa\B2C;
 
-$subscriber = array(
-    'name' => array(
-        'given_name' => 'John',
-        'surname' => 'Doe'
-    ),
-    'email_address' => 'customer@example.com',
-    'shipping_address' => array(
-        'name' => array(
-            'full_name' => 'John Doe'
-        ),
-        'address' => array(
-            'address_line_1' => '',
-            'address_line_2' => '',
-            'admin_area_2' => '',
-            'admin_area_1' => '',
-            'postal_code' => '',
-            'country_code' => 'US'
-        )
-    )
-);
+// you can use the code below to format user phone number
+$phone = preg_replace('/^(?:\+?254|0)?/', '254', 'phone');
 
-$plan = new stdClass();
-$plan->id = 'P-9PP51961TH493415EMW4NX5A';
-$plan->value = '18';
+// when initializing stkpush, you will have to give the root folder
+// this will help the class to find your env file
+// laravel users use base_path() function
 
-//print_r($paypal_subscription->subscribe(
-//    $plan,
-//    $subscriber,
-//    'https://enx316omyr0k.x.pipedream.net/',
-//    'https://enx316omyr0k.x.pipedream.net/'
-//));
-//print_r($paypal_subscription->plans());
-print_r($paypal_subscription->cancelSubscription('I-25GFPAT3X2MT'));
+$data = B2C::getCallbackData();
+echo json_encode($data);
 ?>

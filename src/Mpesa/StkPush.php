@@ -101,6 +101,7 @@ class StkPush extends App
         $response->MerchantRequestID = $data->MerchantRequestID;
         $response->CheckoutRequestID = $data->CheckoutRequestID;
         $response->ResultDesc = $data->ResultDesc;
+        $response->fails = boolval($data->ResultCode);
 
         if (property_exists($data, "CallbackMetadata")) {
             $metadata = $data->CallbackMetadata->Item;

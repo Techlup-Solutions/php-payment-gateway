@@ -101,6 +101,66 @@ below is the format of data returned, <b>dont forget that it is Std Class, don't
 }
 ```
 
+## Making B2C request
+### Api request
+reference the daraja api to understad the payload being passed
+https://developer.safaricom.co.ke/APIs/BusinessToCustomer
+```php
+use Techlup\PaymentGateway\Mpesa\B2C;
+
+$data = new B2C();
+$data->setCallbackUrl("https://enm9smnsyaaq8.x.pipedream.net/")
+    ->setAmount(1000)
+    ->setOriginatorConversationId($uniqueId = uniqid('', true))
+    ->setInitiatorName("username")
+    ->setSecurityCredential('password')
+    ->setCommandId("BusinessPayment")
+    ->setPartyA("paybill")
+    ->setPartyB('phone')
+    ->setRemarks("here are my remarks")
+    ->setOccasion("Testing");
+
+$response = $data->getCallbackData();
+echo json_encode($response);
+
+```
+
+### Api callback
+use the following code to get the result from api callback.
+```php
+$data = Techlup\PaymentGateway\Mpesa\B2C::getCallbackData();
+echo json_encode($data);
+```
+#### Failed request
+```json
+{
+  "status": 2001,
+  "OriginatorConversationID": "4ad2-40f1-8898-cef301c69e1c20604259",
+  "ConversationID": "AG_20240809_*****",
+  "ResultDesc": "The initiator information is invalid.",
+  "TransactionID": "SH****97H",
+  "fails": true
+}
+```
+#### Success request
+```json
+{
+  "status": 0,
+  "OriginatorConversationID": "f0a2-4425-aa4b-1d01d2ea19ea127909458",
+  "ConversationID": "AG_20240809_*****",
+  "ResultDesc": "The service request is processed successfully.",
+  "TransactionID": "SH96HNTPVG",
+  "fails": false,
+  "TransactionAmount": 1000,
+  "TransactionReceipt": "SH96****",
+  "ReceiverPartyPublicName": "2547*******75 - D*** ***",
+  "TransactionCompletedDateTime": "09.08.2024 15:38:35",
+  "B2CUtilityAccountAvailableFunds": 1152.03,
+  "B2CWorkingAccountAvailableFunds": 0,
+  "B2CRecipientIsRegisteredCustomer": "Y",
+  "B2CChargesPaidAccountAvailableFunds": 0
+}
+```
 # PayPal integration
 
 First you need to configure your env by adding the following.

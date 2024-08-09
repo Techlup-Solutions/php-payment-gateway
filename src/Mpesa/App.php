@@ -65,4 +65,10 @@ class App
                 $timestamp
         );
     }
+
+    public function encriptPassword($pass){
+        $publicKey = file_get_contents(__DIR__.'/public.cer');
+        openssl_public_encrypt($pass, $encrypted, $publicKey, OPENSSL_PKCS1_PADDING);
+        return base64_encode($encrypted);;
+    }
 }
