@@ -1,5 +1,5 @@
 # Techlup Pay
-## Php Payment Gateway
+## Php Payment Gateway V 1.0.5
 
 Makes it easy to intergrate payment gatway to your php project.
 
