@@ -20,11 +20,10 @@ class B2C extends App {
     protected $occassion = "Default";
     protected $initiate_url = '';
 
-    public function __construct($root = __DIR__ . '/../..')
+    public function __construct($config)
     {
-        parent::__construct($root);
+        parent::__construct($config);
         // initialize dot env
-        Dotenv::createImmutable($this->app_root)->load();
         $this->initiate_url='https://'.($this->isSandbox()?'sandbox':'api').'.safaricom.co.ke/mpesa/b2c/v1/paymentrequest';
     }
 
