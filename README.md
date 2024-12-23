@@ -20,8 +20,6 @@ $config = [
     ];
 ```
 
-To switch from sandbox and live you can add the following to your env file
-
 ## make an stk push for buy goods
 
 ### initiating the request
@@ -144,7 +142,7 @@ echo json_encode($data);
   "OriginatorConversationID": "f0a2-4425-aa4b-1d01d2ea19ea127909458",
   "ConversationID": "AG_20240809_*****",
   "ResultDesc": "The service request is processed successfully.",
-  "TransactionID": "SH96HNTPVG",
+  "TransactionID": "SH****PVG",
   "fails": false,
   "TransactionAmount": 1000,
   "TransactionReceipt": "SH96****",
